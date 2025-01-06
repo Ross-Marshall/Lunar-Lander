@@ -56,6 +56,10 @@ def draw_scene():
     fuel_text = font.render(f"Fuel: {fuel}", True, WHITE)
     screen.blit(fuel_text, (10, 10))
 
+    # Display speed
+    speed_text = font.render(f"Speed: {lander_dy:.2f}", True, WHITE)
+    screen.blit(speed_text, (10, 50))
+
     pygame.display.flip()
 
 def check_landing():
@@ -106,4 +110,3 @@ while running:
     clock.tick(FPS)
 
 pygame.quit()
-
