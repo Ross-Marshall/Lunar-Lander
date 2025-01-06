@@ -18,13 +18,18 @@ GRAVITY = 0.05
 THRUST = -0.1
 
 # Lander settings
-lander_width, lander_height = 40, 60
-lander_x = WIDTH // 2
-lander_y = 50
-lander_dx = 0
-lander_dy = 0
-lander_speed = 2
-fuel = 100
+def reset_game():
+    global lander_x, lander_y, lander_dx, lander_dy, fuel, lander_width, lander_height, game_active
+    lander_width = 40
+    lander_height = 60
+    lander_x = WIDTH // 2
+    lander_y = 50
+    lander_dx = 0
+    lander_dy = 0
+    fuel = 100
+    game_active = True
+
+reset_game()
 
 # Landing pad settings
 pad_width = 100
@@ -81,27 +86,30 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_n:  # New Game shortcut
+            reset_game()
 
-    keys = pygame.key.get_pressed()
+    if game_active:
+        keys = pygame.key.get_pressed()
 
-    # Apply thrust
-    if keys[pygame.K_SPACE] and fuel > 0:
-        lander_dy += THRUST
-        fuel -= 1
+        # Apply thrust
+        if keys[pygame.K_SPACE] and fuel > 0:
+            lander_dy += THRUST
+            fuel -= 1
 
-    # Update lander position
-    lander_dy += GRAVITY
-    lander_x += lander_dx
-    lander_y += lander_dy
+        # Update lander position
+        lander_dy += GRAVITY
+        lander_x += lander_dx
+        lander_y += lander_dy
 
-    # Check for landing or crash
-    result = check_landing()
-    if result == "success":
-        print("Successful landing!")
-        running = False
-    elif result == "crash":
-        print("You crashed!")
-        running = False
+        # Check for landing or crash
+        result = check_landing()
+        if result == "success":
+            print("Successful landing! Press 'N' for a New Game.")
+            game_active = False
+        elif result == "crash":
+            print("You crashed! Press 'N' for a New Game.")
+            game_active = False
 
     # Draw the scene
     draw_scene()
