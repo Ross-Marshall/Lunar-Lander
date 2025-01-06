@@ -21,8 +21,8 @@ THRUST = -0.1
 # Lander settings
 def reset_game():
     global lander_x, lander_y, lander_dx, lander_dy, fuel, lander_width, lander_height, game_active, crashed_parts
-    lander_width = 40
-    lander_height = 60
+    lander_width = 60
+    lander_height = 10
     lander_x = WIDTH // 2
     lander_y = 50
     lander_dx = 0
@@ -35,9 +35,9 @@ reset_game()
 
 # Landing pad settings
 pad_width = WIDTH  # Extend the landing pad to cover the entire screen width
-pad_height = 10
+pad_height = 5  # Make the landing pad thinner
 pad_x = 0  # Start from the left edge
-pad_y = HEIGHT - pad_height - 10
+pad_y = HEIGHT - pad_height  # Move to the very bottom
 
 # Generate star field
 num_stars = 100
@@ -66,7 +66,7 @@ def draw_scene():
         for part in crashed_parts:
             pygame.draw.rect(screen, RED, part)
     else:
-        pygame.draw.rect(screen, WHITE, (lander_x, lander_y, lander_width, lander_height))
+        draw_lander()
 
     # Draw the landing pad
     pygame.draw.rect(screen, GREEN, (pad_x, pad_y, pad_width, pad_height))
@@ -85,6 +85,24 @@ def draw_scene():
     screen.blit(altitude_text, (10, 90))
 
     pygame.display.flip()
+
+def draw_lander():
+    global lander_x, lander_y
+    # Define the shape of the lander based on the new coordinates
+    disc_shape = [
+        (lander_x, lander_y),  # (0,0)
+        (lander_x + 10, lander_y - 10),  # (10,-10)
+        (lander_x + 50, lander_y - 10),  # (50,-10)
+        (lander_x + 60, lander_y),  # (60,0)
+        (lander_x + 45, lander_y + 6),  # (45,6)
+        (lander_x + 40, lander_y + 6),  # (40,6)
+        (lander_x + 40, lander_y + 10),  # (40,10)
+        (lander_x + 20, lander_y + 10),  # (20,10)
+        (lander_x + 20, lander_y + 6),  # (20,6)
+        (lander_x + 15, lander_y + 6),  # (15,6)
+        (lander_x, lander_y)  # Close the shape
+    ]
+    pygame.draw.polygon(screen, WHITE, disc_shape)
 
 def check_landing():
     global lander_dy, crashed_parts, game_active
