@@ -104,6 +104,10 @@ def draw_lander():
     ]
     pygame.draw.polygon(screen, WHITE, disc_shape)
 
+    # Draw the arc at the top of the lander
+    arc_rect = pygame.Rect(lander_x + 10, lander_y - 15, 40, 10)
+    pygame.draw.arc(screen, WHITE, arc_rect, 3.14159, 0, 2)  # Draw arc from left to right
+
 def check_landing():
     global lander_dy, crashed_parts, game_active
 
