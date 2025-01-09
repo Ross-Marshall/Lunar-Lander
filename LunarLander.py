@@ -10,9 +10,9 @@ WIDTH, HEIGHT = 800, 600
 
 # Colors
 BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+LIGHT_GRAY = (169, 169, 169)
 RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+TAN = (210, 180, 140)
 
 # Gravity and thrust settings
 GRAVITY = 0.05
@@ -59,7 +59,7 @@ def draw_scene():
 
     # Draw the star field
     for star in stars:
-        pygame.draw.circle(screen, WHITE, star, 2)
+        pygame.draw.circle(screen, LIGHT_GRAY, star, 2)
 
     # Draw the lander or crashed parts
     if crashed_parts:
@@ -69,19 +69,19 @@ def draw_scene():
         draw_lander()
 
     # Draw the landing pad
-    pygame.draw.rect(screen, GREEN, (pad_x, pad_y, pad_width, pad_height))
+    pygame.draw.rect(screen, TAN, (pad_x, pad_y, pad_width, pad_height))
 
     # Display fuel
-    fuel_text = font.render(f"Fuel: {fuel}", True, WHITE)
+    fuel_text = font.render(f"Fuel: {fuel}", True, LIGHT_GRAY)
     screen.blit(fuel_text, (10, 10))
 
     # Display speed
-    speed_text = font.render(f"Speed: {lander_dy:.2f}", True, WHITE)
+    speed_text = font.render(f"Speed: {lander_dy:.2f}", True, LIGHT_GRAY)
     screen.blit(speed_text, (10, 50))
 
     # Display altitude
     altitude = max(0, pad_y - (lander_y + lander_height))
-    altitude_text = font.render(f"Altitude: {altitude}", True, WHITE)
+    altitude_text = font.render(f"Altitude: {altitude}", True, LIGHT_GRAY)
     screen.blit(altitude_text, (10, 90))
 
     pygame.display.flip()
@@ -92,6 +92,8 @@ def draw_lander():
     disc_shape = [
         (lander_x, lander_y),  # (0,0)
         (lander_x + 10, lander_y - 10),  # (10,-10)
+        (lander_x + 20, lander_y - 14),  # (20,-14)
+        (lander_x + 40, lander_y - 14),  # (40,-14)
         (lander_x + 50, lander_y - 10),  # (50,-10)
         (lander_x + 60, lander_y),  # (60,0)
         (lander_x + 45, lander_y + 6),  # (45,6)
@@ -102,11 +104,10 @@ def draw_lander():
         (lander_x + 15, lander_y + 6),  # (15,6)
         (lander_x, lander_y)  # Close the shape
     ]
-    pygame.draw.polygon(screen, WHITE, disc_shape)
+    pygame.draw.polygon(screen, LIGHT_GRAY, disc_shape)
 
-    # Draw the arc at the top of the lander
-    arc_rect = pygame.Rect(lander_x + 10, lander_y - 15, 40, 10)
-    pygame.draw.arc(screen, WHITE, arc_rect, 3.14159, 0, 2)  # Draw arc from left to right
+    # Draw the circle on top of the lander
+    pygame.draw.circle(screen, LIGHT_GRAY, (lander_x + 30, lander_y - 14), 2)  # (x, y, radius)
 
 def check_landing():
     global lander_dy, crashed_parts, game_active
